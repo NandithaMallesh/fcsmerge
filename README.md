@@ -23,5 +23,5 @@
 * fcswrite
 
 ### Note:
-*For Bonn _old_set: ignore CD45 for merge 
+* For Bonn _old_set: ignore CD45 for merge 
 	* add it to the EMPTY_MARKER_NAMES_LIST in FCSmerge(some samples have CD45 and some don't; mostly normal samples have CD45)
