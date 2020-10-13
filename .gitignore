@@ -1,0 +1,26 @@
+/tmp
+/cache
+/*output*
+
+# python relevant files
+__pycache__
+*.pyc
+.env
+.ipynb_checkpoints
+
+# generated tags
+tags*
+
+# ignore sphinx build folder
+/docs/_build
+
+
+.eggs
+*.egg-info
+
+# python setup.py build dirs
+/build
+/dist
+
+# Misc
+.idea
