@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import FlowCal
+import fcsparser
 import numpy as np
 import pandas as pd
 import os
@@ -23,15 +23,9 @@ EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME"]
 
 
 def readfcs(fcs):
-    s = FlowCal.io.FCSData(fcs)
-    marker_names = []
-    # adjust marker name discrepancies
-    for i in range(len(s.channels)):
-        key = '$P' + str(i + 1) + 'S'
-        value = s.text.get(key)
-        marker_name = MARKER_NAME_MAP.get(value, value)
-        marker_names.append(marker_name)
-    return pd.DataFrame(s, columns=marker_names)
+    _, s = fcsparser.parse(fcs)
+    s = s.rename(MARKER_NAME_MAP)
+    return s
 
 
 def mergefiles(path, list_files_to_read):
@@ -43,7 +37,6 @@ def mergefiles(path, list_files_to_read):
 
 
 def nn(list_df, common):
-    merged_df = pd.DataFrame()
     concat_merge = []
 
     for i in range(len(list_df)):
@@ -56,7 +49,7 @@ def nn(list_df, common):
             value = np.array(tube1[common])
             idx = computenn(value, all_values).flatten().tolist()
             addtube_markers = addtube.columns
-            markertube = [item for item in addtube_markers if item not in common]
+            markertube = [item for item in addtube_markers if item not in merged_df.columns]
             x = addtube.iloc[idx][markertube].reset_index(drop=True)
             merged_df = pd.concat([merged_df, x], axis=1).reset_index(drop=True)
 
@@ -109,7 +102,6 @@ def fcs_write(df, fname):
     data = df.to_numpy()
     channels = list(df.columns)
     channels = [x.replace(" ", "-") for x in channels]
-    print(channels)
     fcswrite.write_fcs(filename=fname,
                        chn_names=channels,
                        data=data)
