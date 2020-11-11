@@ -75,6 +75,21 @@ def computenn(values, all_values, nbr_neighbors=1):
 
 
 def mergefcs(caseid, datapath, outpath, cohort, list_of_files, common_markers):
+    """Merge a number of FCS files into a single FCS file.
+
+    The new FCS File will be stored in the path: <outpath>/<cohort>/<caseid>_merged.LMD
+
+    Args:
+        caseid: Patient ID. This is used for the automatically generated filename.
+        datapath: Source path for FCS file.
+        outpath: Output path for merged FCS file.
+        cohort: Group subdirectory for output merged FCS file.
+        list_of_files: List of FCS filenames that will be merged.
+        common_markers: List of marker names that will be merged in the single files.
+
+    Returns:
+        Tuple of new merged path, channels in merged path, number of total events.
+    """
     list_df = mergefiles(datapath, list_of_files)
     merged_fcs = nn(list_df, common_markers)
     outpath = os.path.join(outpath, cohort)
