@@ -8,18 +8,7 @@ import os
 import fcswrite
 
 from sklearn.neighbors import NearestNeighbors
-
-MARKER_NAME_MAP = {
-    "Kappa-FITC": "kappa-FITC",
-    "Lambda-PE": "lambda-PE",
-    "FSC": "FS INT LIN",
-    "SSC": "SS INT LIN",
-    "*FITC*": "nix",
-    "CD5 PacBl": "none",  # some samples in berlin panel have additional CD5 in tube4 instead of none pb
-                          # dropping additional CD5; using only tube1 CD5
-}
-
-EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME"]
+from constants import MARKER_NAME_MAP, EMPTY_MARKER_NAMES
 
 
 def readfcs(fcs):

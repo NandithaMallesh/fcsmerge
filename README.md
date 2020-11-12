@@ -3,7 +3,8 @@
 
 ### Scripts
 1. **FCSmerge.py:** merge the fcs data from all tubes. compute nearest neighbour and copy missing markers. Create a sinlge larege FCS file
-2. **merge.py:** read the meta info and check necessary infirmation for merge:
+2. **merge.py:** read the meta info and check necessary information for merge
+3. **constants.py:** panel information and parameters for merge
 
 ### Excution
 * ./merge.py "FCS datapath" "outputpath" "meta_info.json path" "panel"
@@ -19,7 +20,7 @@
 	* Bonn, Bonn_new, MLL9F, MLL5F
 
 ### Dependencies:
-* FlowCal
+* fcsparser
 * fcswrite
 
 ### Note:
