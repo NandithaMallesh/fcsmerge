@@ -25,6 +25,7 @@ EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME"]
 def readfcs(fcs):
     _, s = fcsparser.parse(fcs)
     s = s.rename(MARKER_NAME_MAP)
+    s = s.rename(lambda x: x.replace(" ", "-"), axis=1)
     return s
 
 
