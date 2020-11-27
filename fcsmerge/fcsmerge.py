@@ -13,7 +13,7 @@ from constants import MARKER_NAME_MAP, EMPTY_MARKER_NAMES
 
 def readfcs(fcs):
     _, s = fcsparser.parse(fcs)
-    s = s.rename(MARKER_NAME_MAP)
+    s = s.rename(MARKER_NAME_MAP, axis='columns')
     return s
 
 
