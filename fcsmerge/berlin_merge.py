@@ -9,8 +9,8 @@ import os
 import sys
 
 MARKER_NAME_MAP = {
-    "Kappa-FITC": "kappa-FITC",
-    "Lambda-PE": "lambda-PE",
+    "Kappa FITC": "kappa FITC",
+    "Lambda PE": "lambda PE",
     "FSC": "FS INT LIN",
     "SSC": "SS INT LIN",
     "*FITC*": "nix",
@@ -18,20 +18,20 @@ MARKER_NAME_MAP = {
     # drop additional CD5; using only tube1 CD5
 }
 
-EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME"]
+EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME", "time"]
 
 # Merge details for each panel
 # structure = Panel name: { tubes to merge, common_markers, tube specific markers that are to be merged}
 PANEL_MERGE = {
     "Berlin":
         {
-            "tubes": [2, 3, 4],
-            "common_markers": [],
-            2: ["FS INT LIN", "SS INT LIN", "Kappa FITC", "Lambda PE", "CD19 ECD", "CD5 PC5.5", "CD38 PC7", "CD10 APC",
+            "tubes": ["2", "3", "4"],
+            "common_markers":  ["FS INT LIN", "SS INT LIN", "CD19 ECD", "CD45 KrOr"],
+            "2": ["FS INT LIN", "SS INT LIN", "Kappa FITC", "Lambda PE", "CD19 ECD", "CD5 PC5.5", "CD38 PC7", "CD10 APC",
                 "CD20 PacBl", "CD45 KrOr"],
-            3: ["FS INT LIN", "SS INT LIN", "FMC7 FITC", "CD23 PE", "CD19 ECD", "CD3 PC5", "none PC7", "CD79b APC",
+            "3": ["FS INT LIN", "SS INT LIN", "FMC7 FITC", "CD23 PE", "CD19 ECD", "CD3 PC5", "none PC7", "CD79b APC",
                 "CD22 PacBl", "CD45 KrOr"],
-            4: ["FS INT LIN", "SS INT LIN", "CD43 FITC", "IgM PE", "CD19 ECD", "CD25 PC5.5", "CD11c PC7", "CD103 APC",
+            "4": ["FS INT LIN", "SS INT LIN", "CD43 FITC", "IgM PE", "CD19 ECD", "CD25 PC5.5", "CD11c PC7", "CD103 APC",
                 "CD45 KrOr"],
         },
 }
@@ -49,13 +49,17 @@ def map_elements(x):
 
 
 def checkmarkers(tubemarker, tubechecker):
+    check = True
     marker_list = list(map(map_elements, tubemarker))
     tubechecker = list(map(map_elements, tubechecker))
     for m in marker_list:
         if m not in tubechecker:
-            if (empty_names not in m for empty_names in EMPTY_MARKER_NAMES):
+            if any(xs in m for xs in EMPTY_MARKER_NAMES):
+                continue
+            else:
                 return False
-    return True
+
+    return check
 
 
 def replace_samples(case, new_path, new_marker_list, new_event_count):
@@ -98,20 +102,21 @@ if __name__ == '__main__':
         case_info = json.load(f)
 
     for case in case_info:
+        case = case['__case__']
         files_to_merge = []
         markers = []
         tube_check = []
-        for tube_info in case['filepaths']:
+        for tube_info in case['samples']:
+            tube_info = tube_info["__fcssample__"]
             if tube_info['tube'] in tubes:
-                markers = tube_info['fcs'].get('markers')
+                markers = tube_info.get('markers')
                 tube_check = panel_info[tube_info['tube']]
                 if checkmarkers(markers, tube_check):
-                    files_to_merge.append(tube_info['fcs'].get('path'))
-        # align_list = getalign(common_markers,markers)
+                    files_to_merge.append(tube_info.get('path'))
         print(files_to_merge)
         if files_to_merge and len(files_to_merge) == len(tubes):
             new_path, new_markers, new_event_count = fcsmerge.mergefcs(case['id'], datapath, outputpath,
-                                                                       case['cohort'],
+                                                                       case['group'],
                                                                        files_to_merge, common_markers)
-            case['filepaths'] = replace_samples(case, new_path, new_markers, new_event_count)
+            case['samples'] = replace_samples(case, new_path, new_markers, new_event_count)
     write_json(outputpath, case_info)

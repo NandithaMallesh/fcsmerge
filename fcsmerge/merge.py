@@ -30,7 +30,6 @@ def checkmarkers(tubemarker, tubechecker):
     for m in marker_list:
         if m not in tubechecker:
             if any(xs in m for xs in EMPTY_MARKER_NAMES):
-                print("empty marker")
                 continue
             else:
                 return False
