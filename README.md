@@ -17,7 +17,7 @@
 * outputpath: Out put folder path to write the merged FCS files
 * meta_info.json path: path to case_info.json
 * panel: one of the following
-	* Bonn, Bonn_new, MLL9F, MLL5F
+	* Bonn, Bonn_new, MLL9F, MLL5F, Erlangen
 
 ### Dependencies:
 * fcsparser
