@@ -14,7 +14,7 @@ def print_usage():
     """print syntax of script invocation"""
     print("\nUsage:")
     print("python {0:} datapath outputpath metainfojson(along with path) panel(Bonn, Bonn_new, MLL9F, "
-          "MLL5F or Berlin)\n".format(
+          "MLL5F, Erlangen or Berlin)\n".format(
             os.path.basename(sys.argv[0])))
     return
 

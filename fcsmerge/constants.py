@@ -11,11 +11,22 @@ MARKER_NAME_MAP = {
     "*FITC*": "nix",
     "CD5 PacBl": "none",  # some samples in berlin panel have additional CD5 in tube4 instead of none pb
                           # dropping additional CD5; using only tube1 CD5
+    "45-CO": "45-KO",     # additional marker name mapping for Erlangen
+    "FL10 INT LOG": "45-KO",
+    "43-APC-AF750": "43-APC750",
+    "-ECD": "none",
+    "FL3 INT LOG": "none",
+    "23_PB": "23-PB",
+    "5-APC-AF750": "5-APC750",
+    "FL7 INT LOG": "none",
+    "APC-AF700": "none",
+    "Kappa FITC": "kappa FITC",
+    "Lambda PE": "lambda PE",
+
 }
 
 # Empty channels to drop
-EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME"]
-
+EMPTY_MARKER_NAMES = ["nix", "none", "leer", "TIME", "FS PEAK LIN", "time"]
 
 # Merge details for each panel
 # structure = Panel name: { tubes to merge, common_markers, tube specific markers that are to be merged}
@@ -57,4 +68,14 @@ PANEL_MERGE = {
             5: ["FS INT LIN", "SS INT LIN", "Kappa-FITC", "Lambda-PE", "CD19-ECD", "CD38-PC5", "CD45-PC7"],
             7: ["FS INT LIN", "SS INT LIN", "CD11c-PE", "CD19-ECD", "CD25-PC5", "CD45-PC7"],
         },
+    "Erlangen":
+        {
+            "tubes": ["B1", "B2"],
+            "common_markers": ["FS INT LIN", "SS INT LIN", "19-PC7", "45-KO"],
+            "B1": ["FS INT LIN", "SS INT LIN", "Kappa-FITC", "Lambda-PE", "3-ECD", "20-PC5.5", "19-PC7", "10-APC",
+                   "5-APC750", "23-PB", "45-KO"],
+            "B2": ["FS INT LIN", "SS INT LIN", "38-FITC", "79b-PE", "11c-PC5.5", "19-PC7", "103-APC", "43-APC-AF750",
+                   "HLADR-PB", "45-KO"],
+        },
+
 }
