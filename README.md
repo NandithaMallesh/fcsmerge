@@ -1,5 +1,5 @@
 # FCS Merge: merge fcs data from all tubes and calculate missing value
-## Approach: For each tube, find find nearest neighbour of every event in the other tubes, copy missing markers. Repeat for all tubes
+## Approach: For each tube, find nearest neighbour of every event in the other tubes, copy missing markers. Repeat the process between all tubes such that events in one tube have imputed values for markers that were originally measured in different tubes.
 
 ### Scripts
 1. **FCSmerge.py:** merge the fcs data from all tubes. compute nearest neighbour and copy missing markers. Create a sinlge larege FCS file
@@ -22,7 +22,3 @@
 ### Dependencies:
 * fcsparser
 * fcswrite
-
-### Note:
-* For Bonn _old_set: ignore CD45 for merge 
-	* add it to the EMPTY_MARKER_NAMES_LIST in FCSmerge(some samples have CD45 and some don't; mostly normal samples have CD45)
