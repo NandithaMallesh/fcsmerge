@@ -10,12 +10,13 @@ import sys
 
 from constants import MARKER_NAME_MAP, EMPTY_MARKER_NAMES, PANEL_MERGE
 
+
 def print_usage():
     """print syntax of script invocation"""
     print("\nUsage:")
     print("python {0:} datapath outputpath metainfojson(along with path) panel(Bonn, Bonn_new, MLL9F, "
           "MLL5F, Erlangen or Berlin)\n".format(
-            os.path.basename(sys.argv[0])))
+        os.path.basename(sys.argv[0])))
     return
 
 
@@ -24,6 +25,18 @@ def map_elements(x):
 
 
 def checkmarkers(tubemarker, tubechecker):
+    """Check for required markers in each tube 
+
+    The tube-specific markers that are to be merged are desceribed in constants.py
+
+    Args:
+        tubemarker: required markers for that tube
+        tubechecker: markers in the given tube that needs to be validated
+
+    Returns:
+        True if all the required markers are found, False otherwise
+    """
+
     check = True
     marker_list = list(map(map_elements, tubemarker))
     tubechecker = list(map(map_elements, tubechecker))
@@ -38,6 +51,18 @@ def checkmarkers(tubemarker, tubechecker):
 
 
 def replace_filepaths(case, new_path, new_marker_list, new_event_count):
+    """Rewrite filepath element of the meta data json for each of the merged sample
+
+    Args:
+        case: case id of the sample
+        new_path: new file path of the merged FCS file
+        new_marker_list: list of marker names in the merged FCS
+        new_event_count: new event count of the merged sample
+
+    Returns:
+        The modified "filepath" for the give case id
+    """
+
     fp = [{'id': case['id'],
            'panel': case['filepaths'][0].get('panel'),
            'tube': 1,
@@ -53,24 +78,6 @@ def write_json(out_path, c_info):
     json_file = os.path.join(out_path, "data.json")
     with open(json_file, 'w') as outfile:
         json.dump(c_info, outfile, indent=4)
-
-
-# def getalign(common,allm):
-
-# allmarkers = common + sum(list(allm.values()), [])
-# seen = set()
-# seen_add = seen.add
-# align_list = [x for x in allmarkers if not (x in seen or seen_add(x))]
-# if "FSC" in align_list and "FS INT LIN" in align_list:
-# align_list.remove("FSC")
-# if "SSC" in align_list and "SS INT LIN" in align_list:
-# align_list.remove("SSC")
-# if "kappa-FITC" in align_list:
-# align_list.remove("FSC")
-# if "SSC" in align_list and "SS INT LIN" in align_list:
-# align_list.remove("SSC")
-
-# return align_list
 
 
 if __name__ == '__main__':
@@ -102,8 +109,7 @@ if __name__ == '__main__':
                 tube_check = panel_info[tube_info['tube']]
                 if checkmarkers(markers, tube_check):
                     files_to_merge.append(tube_info['fcs'].get('path'))
-        # align_list = getalign(common_markers,markers)
-        print(files_to_merge)
+
         if files_to_merge and len(files_to_merge) == len(tubes):
             new_path, new_markers, new_event_count = fcsmerge.mergefcs(case['id'], datapath, outputpath,
                                                                        case['cohort'],
