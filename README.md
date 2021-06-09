@@ -12,7 +12,7 @@ Install the following packages with pip:
 * fcswrite
 
 ### Data
-Download the data sets to be merged from Harvard Dataverse.
+Download the data sets to be merged from Harvard Dataverse: https://doi.org/10.7910/DVN/CQHHEH
 
 ### Scripts
 1. **FCSmerge.py:** merge the fcs data from all tubes. compute nearest neighbour and copy missing markers. Create a sinlge larege FCS file
