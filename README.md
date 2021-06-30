@@ -1,6 +1,9 @@
 # FCS Merge: merge fcs data from all tubes for each sample and impute missing values for the non-shared markers
 
 ## Approach: 
+
+![Merge_v4](https://user-images.githubusercontent.com/22116058/123972163-e68bd400-d9ba-11eb-917d-702a7aa2b47d.png)
+
 * Step 1: For each tube(i), find nearest neighbour of every event in the other tubes(j) using the shared markers.
 * Step 2: For each event in tube i, copy missing markers from tubes j. 
 * Step 3: Repeat the process between all tubes such that events in one tube have imputed values for all non-shared markers that were originally measured in  different tubes.
@@ -19,7 +22,7 @@ Download the data sets to be merged from Harvard Dataverse: https://doi.org/10.7
 2. **merge.py:** read the meta info and check necessary information for merge
 3. **constants.py:** panel information and parameters for merge
 
-### Excution
+### Usage
 Once the original FCS data sets are downladed, run the following commands to merge each data set:
 * For all panels other than Berlin, use:
 	* ./merge.py "FCS datapath" "outputpath" "meta_info.json path" "panel"
