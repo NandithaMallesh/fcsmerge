@@ -35,4 +35,13 @@ Once the original FCS data sets are downladed, run the following commands to mer
 	* Bonn, Bonn_new, MLL9F, MLL5F, Erlangen
 
 ### Examples
-See example.ipynb
+```
+./merge.py "$FCS" "$OUTPUT" "$META" "$PANEL"
+	$FCS: path where the original unmerged FCS files are stored
+	$OUTPUT: path to save the merged fcs files
+	$META: meta_info.json describing the dataset
+	$PANEL: panel to retrieve the appropriate merge parameters for each data set
+
+./merge.py "/data/FCS/MLL5F" "Merged_FCS/MLL5F" "/data/FCS/MLL5F/case_info.json" "MLL5F"
+
+```
